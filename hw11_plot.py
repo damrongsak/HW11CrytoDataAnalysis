@@ -5,11 +5,16 @@ import matplotlib.style as style
 style.use('seaborn-poster')  # sets the size of the charts
 style.use('ggplot')
 
-pair = 'btcusd'
+pair = 'ethusd'
 path = 'data'
-filename = '{}/{}_5m.xlsx'.format(path, pair)
+bin_size = '1h'
+
+filename = '{}/{}_{}.xlsx'.format(path, pair, bin_size)
 sheet_name = pair
 df = pd.read_excel(filename, sheet_name=sheet_name, index_col='time')
+
+min_price = df['close'].min(axis=0, skipna=True)
+max_price = df['close'].max(axis=0, skipna=True)
 
 date_start = df[0:1].index[0]
 date_end = df[-1:].index[0]
@@ -17,15 +22,15 @@ price = df[-1:].close.values[0]
 zone = df[-1:].zone.values[0]
 atr = df[-1:].atr.values[0]
 
-zone_len = 500  # btc
+zone_len = 500 if max_price > 5000 else 25  # manage zone
 
 # Calculate Zone
 df['zone'] = df['close'].apply(lambda x: (x-(x % zone_len)))
 
 df_time_in_the_zone = df.groupby('zone').count()[['close']]
 df_time_in_the_zone.rename(columns={'close': 'count_point'}, inplace=True)
-# point * 5min * 60sec
-df_time_in_the_zone['time_sec'] = df_time_in_the_zone['count_point'] * 5 * 60
+# point * 60min * 60sec
+df_time_in_the_zone['time_sec'] = df_time_in_the_zone['count_point'] * 60 * 60
 df_time_in_the_zone['str_time'] = df_time_in_the_zone['time_sec'].apply(
     lambda x: str(datetime.timedelta(seconds=x)))
 
@@ -50,9 +55,12 @@ ax.legend(bbox_to_anchor=(1, 1), fontsize='large')
 ax.grid(True)
 
 plt.xlabel('close')
-plt.ylabel('atr')
-plt.title('BTCUSD 5Min from {} to {}@{} btc/usd zone:{} atr:{}'.format(date_start,
-                                                                       date_end, price, int(zone), int(atr)))
-plt.xticks(range(3000, 15000, 500))
-plt.xticks(rotation=90)
+plt.ylabel('ATR')
+plt.title('{} {} from {} to {}@{} zone:{} atr:{}'.format(pair.upper(), bin_size, date_start,
+                                                         date_end, price, int(zone), round(atr, 2)), fontsize=16)
+plt.xticks(range(int(min_price), int(max_price), zone_len))
+plt.xticks(fontsize=10, rotation=45)
+plt.tick_params(axis='both', which='minor', labelsize=10)
+# plt.savefig('data/{pair}.png'.format(pair=pair))
+
 plt.show()
