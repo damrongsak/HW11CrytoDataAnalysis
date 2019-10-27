@@ -5,7 +5,7 @@ import matplotlib.style as style
 style.use('seaborn-poster')  # sets the size of the charts
 style.use('ggplot')
 
-pair = 'ethusd'
+pair = 'xrpusd'
 path = 'data'
 bin_size = '1h'
 
@@ -22,7 +22,10 @@ price = df[-1:].close.values[0]
 zone = df[-1:].zone.values[0]
 atr = df[-1:].atr.values[0]
 
-zone_len = 500 if max_price > 5000 else 25  # manage zone
+# manage zone
+zone_len = 500 if max_price > 5000 else 50
+zone_len = 10 if max_price > 10 and max_price < 100 else zone_len
+zone_len = 0.1 if max_price < 1 else zone_len
 
 # Calculate Zone
 df['zone'] = df['close'].apply(lambda x: (x-(x % zone_len)))
@@ -56,9 +59,13 @@ ax.grid(True)
 
 plt.xlabel('close')
 plt.ylabel('ATR')
-plt.title('{} {} from {} to {}@{} zone:{} atr:{}'.format(pair.upper(), bin_size, date_start,
-                                                         date_end, price, int(zone), round(atr, 2)), fontsize=16)
-plt.xticks(range(int(min_price), int(max_price), zone_len))
+plt.title('{pair} {bin_size} Price={price}, Zone={zone}, ATR={atr}, ({date_start}_{date_end})'
+          .format(pair=pair.upper(), bin_size=bin_size, date_start=date_start,
+                  date_end=date_end, price=price, zone=round(zone, 4), atr=round(atr, 4)
+                  ), fontsize=16)
+
+if min_price > 1:
+    plt.xticks(range(int(min_price), int(max_price), zone_len))
 plt.xticks(fontsize=10, rotation=45)
 plt.tick_params(axis='both', which='minor', labelsize=10)
 # plt.savefig('data/{pair}.png'.format(pair=pair))
