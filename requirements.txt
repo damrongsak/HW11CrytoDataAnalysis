@@ -233,7 +233,7 @@ pythonnet==2.3.0
 pytube==9.3.5
 pytz==2018.5
 PyWavelets==1.0.0
-pywin32==223
+pywin32==301
 pywinpty==0.5.4
 PyYAML==3.13
 pyzmq==17.1.2
