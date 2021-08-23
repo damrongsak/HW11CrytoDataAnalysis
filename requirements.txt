@@ -122,7 +122,7 @@ jupyter-console==5.2.0
 jupyter-core==4.4.0
 jupyter-drawing-pad==0.1.6
 -e git+https://gitlab.com/oscar6echo/jupyter-widget-d3-slider.git@ba608d6ecd34132c855b858a637bee80c208d721#egg=jupyter_widget_d3_slider
-jupyterlab==0.34.9
+jupyterlab==1.2.21
 jupyterlab-launcher==0.13.1
 jupyterthemes==0.20.0
 keyring==13.2.1
