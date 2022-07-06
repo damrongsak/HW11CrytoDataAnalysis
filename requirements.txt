@@ -132,7 +132,7 @@ lesscpy==0.13.0
 line-bot-sdk==1.8.0
 llvmlite==0.24.0
 locket==0.2.0
-lxml==4.2.3
+lxml==4.9.1
 MarkupSafe==1.0
 matplotlib==2.2.2
 mccabe==0.6.1
