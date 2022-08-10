@@ -149,7 +149,7 @@ msgpack==0.5.6
 multipledispatch==0.6.0
 multitasking==0.0.7
 munch==2.3.2
-nbconvert==5.4.0
+nbconvert==6.3.0
 nbformat==4.4.0
 networkx==2.1
 nltk==3.3
