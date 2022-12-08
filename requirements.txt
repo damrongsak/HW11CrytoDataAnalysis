@@ -32,7 +32,7 @@ brewer2mpl==1.4.1
 bruges==0.3.4
 cachetools==3.1.0
 Cartopy==0.16.0
-certifi==2019.3.9
+certifi==2022.12.7
 cffi==1.11.5
 chardet==3.0.4
 click==6.7
